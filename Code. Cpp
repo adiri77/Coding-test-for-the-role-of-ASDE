@@ -50,8 +50,11 @@ bool canAbhimanyuEscape(std::vector<int> k, int initial_power, int a, int b) {
     if (!k3_in_r && !k7_in_r) {
         if (z > effective_q) return true;
     } else {
-        if (k3_in_r) effective_q += k[2] / 2;
-        if (k7_in_r) effective_q += k[6] / 2;
+    if(k3_in_r || k7_in_r) effective_q=effective_q-(k[2]/2+k[6]/2);
+    
+        else if (k3_in_r) effective_q -= k[2] / 2;
+        else if (k7_in_r) effective_q -= k[6] / 2;
+      
         if (z > effective_q) return true;
     }
 
@@ -61,8 +64,8 @@ bool canAbhimanyuEscape(std::vector<int> k, int initial_power, int a, int b) {
 int main() {
     // Test case 1
     std::vector<int> k1 = {100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 5};
-    int initial_power1 = 30;
-    int a1 = 3;
+    int initial_power1 = 90;
+    int a1 = 5;
     int b1 = 2;
     std::cout << "Test Case 1: " << (canAbhimanyuEscape(k1, initial_power1, a1, b1) ? "True" : "False") << std::endl;
 
