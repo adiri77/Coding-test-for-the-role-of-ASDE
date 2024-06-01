@@ -28,11 +28,12 @@
      - **Case 2.2.3**: If both `k3` and `k7` are in `r`:
        - If `z > q - (s - k7/2 - k3/2)`, then Abhimanyu can escape (`return True`).
 
+**If none of the above case satisfied then result is false.**
+
 6. **Special Considerations**:
    - **All Powers Skipped**: If the number of skips `a` is greater than or equal to the total number of circles (11), Abhimanyu wouldn't need to fight any battles. This results in an automatic victory.
    - **Minimal Initial Power**: If Abhimanyu’s initial power is zero or very low, and the recharge `b` isn't sufficient to boost his power to meet or exceed the lowest enemy power, he will definitely lose unless he skips those battles.
    - **Excessive Recharge Factor**: When the recharge multiplier `b` is very high, ensure the calculation does not result in an integer overflow. Utilize larger data types or limit checks to prevent computational errors in environments with limited integer ranges.
 
-### Execution:
-To execute this algorithm, provide the setup of enemy powers, Abhimanyu's starting power, his recharge boon `b`, and his skip ability `a`. The results will depend on these inputs, determining whether or not Abhimanyu can make it through the Chakravyuh successfully.
+
 
