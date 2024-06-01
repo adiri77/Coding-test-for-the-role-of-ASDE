@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <algorithm> // For sort and reverse functions
+#include <numeric>   // For accumulate function
+#include <climits>   // For INT_MAX
+
+bool canAbhimanyuEscape(std::vector<int> k, int initial_power, int a, int b) {
+    // Edge Case 1: Check if Abhimanyu can skip all enemies
+    if (a >= 11) {
+        return true; // Abhimanyu skips all battles.
+    }
+
+    // Append regenerative powers for k3 and k7
+    std::vector<int> p = k;
+    p.push_back(k[2] / 2);  // k3's half power
+    p.push_back(k[6] / 2);  // k7's half power
+
+    // Sort the original power array in descending order to select the first 'a' elements
+    std::vector<int> x = k;
+    std::sort(x.begin(), x.end(), std::greater<int>());
+    std::vector<int> r(x.begin(), x.begin() + a);
+
+    // Calculate the required sums
+    int q = std::accumulate(p.begin(), p.end(), 0);
+    int s = std::accumulate(r.begin(), r.end(), 0);
+    
+    // Edge Case 2: Check minimal initial power scenario
+    if (initial_power == 0 && b == 0) {
+        return false; // Abhimanyu cannot win without power.
+    }
+
+    // Effective power after using recharge boon 'b' times
+    long long z = (long long) initial_power * b; // Cast to prevent overflow
+
+    // Edge Case 3: Check for overflow in power calculation
+    if (z > INT_MAX) {
+        z = INT_MAX;
+    }
+
+    // Check conditions
+    if (z > q) {
+        return true;
+    }
+
+    // Check presence of k3 or k7 in the skipped set 'r'
+    bool k3_in_r = std::find(r.begin(), r.end(), k[2]) != r.end();
+    bool k7_in_r = std::find(r.begin(), r.end(), k[6]) != r.end();
+
+    int effective_q = q - s;
+    if (!k3_in_r && !k7_in_r) {
+        if (z > effective_q) return true;
+    } else {
+        if (k3_in_r) effective_q += k[2] / 2;
+        if (k7_in_r) effective_q += k[6] / 2;
+        if (z > effective_q) return true;
+    }
+
+    return false;
+}
+
+int main() {
+    // Test case 1
+    std::vector<int> k1 = {100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 5};
+    int initial_power1 = 30;
+    int a1 = 3;
+    int b1 = 2;
+    std::cout << "Test Case 1: " << (canAbhimanyuEscape(k1, initial_power1, a1, b1) ? "True" : "False") << std::endl;
+
+    // Test case 2
+    std::vector<int> k2 = {10, 20, 15, 25, 5, 35, 30, 40, 45, 50, 55};
+    int initial_power2 = 20;
+    int a2 = 12; // More skips than circles
+    int b2 = 3;
+    std::cout << "Test Case 2: " << (canAbhimanyuEscape(k2, initial_power2, a2, b2) ? "True" : "False") << std::endl;
+
+    // Test case 3: Minimal power, no recharge
+    std::vector<int> k3 = {30, 20, 10, 40, 50, 60, 70, 80, 90, 100, 110};
+    int initial_power3 = 0;
+    int a3 = 5;
+    int b3 = 0;
+    std::cout << "Test Case 3: " << (canAbhimanyuEscape(k3, initial_power3, a3, b3) ? "True" :"False") << std::endl;
+
+return 0; }
